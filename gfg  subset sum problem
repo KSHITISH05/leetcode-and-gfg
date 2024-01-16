@@ -1,0 +1,41 @@
+class Solution {
+public:
+
+    bool memoize(vector<int>& arr, int sum, int index, vector<vector<int>>& dp) {
+        // Base cases:
+        if (sum == 0) {
+            return true;
+        }
+        if (index == 0) {
+            return arr[0] == sum;
+        }
+
+        // Check if the result for the current state is already memoized
+        if (dp[index][sum] != -1) {
+            return dp[index][sum];
+        }
+
+        // Case 1: Not taking the current element in the subset
+        bool not_take = memoize(arr, sum, index - 1, dp);
+
+        // Case 2: Taking the current element in the subset
+        bool take = false;
+        // We can only take the current element if it is less than or equal to the remaining sum.
+        if (sum >= arr[index]) {
+            // Recursively check for the subset without the current element and with the reduced sum.
+            take = memoize(arr, sum - arr[index], index - 1, dp);
+        }
+
+        // Memoize the result before returning
+        return dp[index][sum] = take || not_take;
+    }
+
+    bool isSubsetSum(vector<int> arr, int sum) {
+        int n = arr.size();
+        // Start the recursion from the last index of the array
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
+
+        int index = arr.size() - 1;
+        return memoize(arr, sum, index, dp);
+    }
+};
