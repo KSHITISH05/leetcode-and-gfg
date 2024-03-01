@@ -1,0 +1,52 @@
+include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int N, M;
+        cin >> N >> M;
+
+        int X, Y;
+        cin >> X >> Y;
+        
+        vector<char> ans;
+
+        vector<vector<char>> results(N, vector<char>(M));
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                cin >> results[i][j];
+            }
+        }
+
+        // Check if each candidate passed the test
+        for (int i = 0; i < N; i++) 
+        {
+            int completeSolved = 0, partialSolved = 0;
+
+            for (int j = 0; j < M; j++) {
+                if (results[i][j] == 'F') {
+                    completeSolved++;
+                } else if (results[i][j] == 'P') {
+                    partialSolved++;
+                }
+            }
+
+            if (completeSolved >= X || (completeSolved >= (X - 1) && partialSolved >= Y)) {
+               ans.push_back('1');
+            } else {
+                ans.push_back('0');
+            }
+        }
+
+        for (int i = 0; i < N; i++) {
+            cout << ans[i];
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
